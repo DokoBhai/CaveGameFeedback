@@ -1,17 +1,18 @@
-// GET endpoint to retrieve all feedback
-app.get('/feedback', (req, res) => {
-  res.json(feedbackList);
-});
+
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // In-memory storage for feedback
 const feedbackList = [];
+
+// GET endpoint to retrieve all feedback
+app.get('/feedback', (req, res) => {
+  res.json(feedbackList);
+});
 
 // POST endpoint to receive feedback
 app.post('/feedback', (req, res) => {
@@ -23,7 +24,6 @@ app.post('/feedback', (req, res) => {
   feedbackList.push({ player, feedback, timestamp: new Date().toISOString() });
   res.json({ message: 'Feedback received', player, feedback });
 });
-
 
 // Serve the HTML interface at /
 const path = require('path');
