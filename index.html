@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cave Game Feedback</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+    h1 { color: #333; }
+    .feedback-list { margin-top: 2em; }
+    .feedback-item { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px #0001; padding: 1em; margin-bottom: 1em; }
+    .player { font-weight: bold; color: #2a5d8f; }
+    .timestamp { color: #888; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Cave Game Feedback</h1>
+  <div class="feedback-list" id="feedbackList"></div>
+  <script>
+    async function loadFeedback() {
+      const res = await fetch('/feedback');
+      const feedback = await res.json();
+      const list = document.getElementById('feedbackList');
+      list.innerHTML = '';
+      if (feedback.length === 0) {
+        list.innerHTML = '<em>No feedback yet.</em>';
+        return;
+      }
+      feedback.slice().reverse().forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'feedback-item';
+        div.innerHTML = `<span class="player">${item.player}</span> <span class="timestamp">[${new Date(item.timestamp).toLocaleString()}]</span><br>${item.feedback}`;
+        list.appendChild(div);
+      });
+    }
+    loadFeedback();
+    setInterval(loadFeedback, 5000);
+  </script>
+</body>
+</html>
